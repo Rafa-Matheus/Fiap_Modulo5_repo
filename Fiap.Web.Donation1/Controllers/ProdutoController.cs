@@ -49,7 +49,7 @@ namespace Fiap.Web.Donation1.Controllers
         {
             // Consulta o BD
 
-            ViewBag.Produtos = produtos;
+            ViewBag.Produtos = produtos; // Carrego/Levo os produtos para a View
             //TempData["Produtos"] = produtos;
 
             return View();
