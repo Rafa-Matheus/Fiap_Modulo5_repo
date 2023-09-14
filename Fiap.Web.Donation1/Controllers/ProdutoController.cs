@@ -49,10 +49,10 @@ namespace Fiap.Web.Donation1.Controllers
         {
             // Consulta o BD
 
-            ViewBag.Produtos = produtos;
+            ViewBag.Produtos = produtos; // Carrego/Levo os produtos para a View
             //TempData["Produtos"] = produtos;
 
-            return View();
+            return View(); // ViewBag deve ser associado a um retorno View!
         }
 
         [HttpGet] // Get é para obter/abrir/consultar algo
@@ -71,6 +71,7 @@ namespace Fiap.Web.Donation1.Controllers
             //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
             TempData["Mensagem"] = $"{produtoModel.Nome} cadastrado com sucesso";
 
+            // Com o tipo de return abaixo, não posso usar ViewBag, precisa ser TempData
             return RedirectToAction("Index");
         }
     }
