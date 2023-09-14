@@ -52,7 +52,7 @@ namespace Fiap.Web.Donation1.Controllers
             ViewBag.Produtos = produtos; // Carrego/Levo os produtos para a View
             //TempData["Produtos"] = produtos;
 
-            return View();
+            return View(); // ViewBag deve ser associado a um retorno View!
         }
 
         [HttpGet] // Get é para obter/abrir/consultar algo
