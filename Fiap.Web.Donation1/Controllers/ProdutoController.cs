@@ -49,29 +49,78 @@ namespace Fiap.Web.Donation1.Controllers
         {
             // Consulta o BD
 
-            ViewBag.Produtos = produtos; // Carrego/Levo os produtos para a View
+            //ViewBag.Produtos = produtos; // Carrego/Levo os produtos para a View
             //TempData["Produtos"] = produtos;
 
-            return View(); // ViewBag deve ser associado a um retorno View!
+            return View(produtos); // Posso enviar pois a View está tipada
         }
 
         [HttpGet] // Get é para obter/abrir/consultar algo
         public IActionResult Novo()
         {
-            return View();
+            return View(new ProdutoModel());
         }
 
         [HttpPost] // Post deve ser usado para gravar algo
-        public IActionResult Novo(ProdutoModel produtoModel)
+        public IActionResult Novo(ProdutoModel produtoModel) // instanciação implícita
         {
+            #region Código anterior comentado
+            /*
             // Aqui poderiam ir as instruções que gravariam o produto no DB
 
             ViewBag.Produtos = produtos;
 
-            //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
+            // ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
             TempData["Mensagem"] = $"{produtoModel.Nome} cadastrado com sucesso";
 
             return RedirectToAction("Index");
+            */
+            #endregion
+
+            if (string.IsNullOrEmpty(produtoModel.Nome))
+            {
+                ViewBag.Mensagem = "O campo nome é requerido";
+
+                return View(produtoModel);
+            }
+            else
+            {
+                // UPDATE produto SET WHERE Produto = produtoModel.ProdutoId
+                TempData["Mensagem"] = $"{produtoModel.Nome} alterado com sucesso";
+
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Editar(int id)
+        {
+            // SELECT * FROM produto WHERE ProdutoId = {id};
+            var produto = produtos[id - 1];
+
+            // ViewBag para passar elementos do Controller para a View
+            //ViewBag.Produto = produto;
+
+            // Posso enviar produto como parâmetro pois a View está associada a Model
+            return View(produto); 
+        }
+
+        [HttpPost]
+        public IActionResult Editar(ProdutoModel produtoModel)
+        {
+            if (string.IsNullOrEmpty(produtoModel.Nome))
+            {
+                ViewBag.Mensagem = "O campo nome é requerido";
+
+                return View(produtoModel);
+            }
+            else
+            {
+                // UPDATE produto SET WHERE Produto = produtoModel.ProdutoId
+                TempData["Mensagem"] = $"{produtoModel.Nome} alterado com sucesso";
+
+                return RedirectToAction("Index");
+            }
         }
     }
 }
