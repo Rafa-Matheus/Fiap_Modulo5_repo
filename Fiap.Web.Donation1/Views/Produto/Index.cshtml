@@ -4,6 +4,8 @@
 @{
 }
 
+@model IList<ProdutoModel> 
+
 <h1>Meus produtos</h1>
 
 @if (!String.IsNullOrEmpty((String)@TempData["Mensagem"]))
@@ -28,7 +30,7 @@
     </thead>
     <tbody>
 
-        @foreach (var produto in ViewBag.Produtos)
+        @foreach (var produto in Model)
         @*foreach (var produto in (List<ProdutoModel>)TempData["Produtos"])*@
         {
             <tr>
