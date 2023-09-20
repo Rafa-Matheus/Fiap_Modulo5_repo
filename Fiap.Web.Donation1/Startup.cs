@@ -1,5 +1,7 @@
+using Fiap.Web.Donation1.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +25,11 @@ namespace Fiap.Web.Donation1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            var connectionString = Configuration.GetConnectionString("databaseUrl");
+            services.AddDbContext<DataContext>(options =>
+               options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true)
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
