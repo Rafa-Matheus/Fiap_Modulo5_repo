@@ -17,6 +17,9 @@ namespace Fiap.Web.Donation1.Data
         public DbSet<TrocaModel> Trocas { get; set; }
         */
 
+        public DbSet<UsuarioModel> Usuarios { get; set; }
+        public DbSet<ProdutoModel> Produtos { get; set; }
+
         public DataContext(DbContextOptions options) : base(options)
         {
 
