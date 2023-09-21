@@ -1,4 +1,6 @@
-﻿using Fiap.Web.Donation1.Models;
+﻿using Fiap.Web.Donation1.Data;
+using Fiap.Web.Donation1.Models;
+using Fiap.Web.Donation1.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,12 +12,18 @@ namespace Fiap.Web.Donation1.Controllers
     public class ProdutoController : Controller
     {
 
-        private List<ProdutoModel> produtos;
+        //private List<ProdutoModel> produtos;
 
-        public ProdutoController()
+        private readonly ProdutoRepository produtoRepository;
+
+        public ProdutoController(DataContext dataContext)
         {
+
+            produtoRepository = new ProdutoRepository(dataContext);
+
             // Acesso fake ao banco dados
 
+            /*
             produtos = new List<ProdutoModel>{
                 new ProdutoModel()
                 {
@@ -41,7 +49,7 @@ namespace Fiap.Web.Donation1.Controllers
                     Disponivel = true,
                     DataExpiracao = DateTime.Now,
                 },
-            };
+            };*/
         }
 
         [HttpGet]
@@ -51,6 +59,8 @@ namespace Fiap.Web.Donation1.Controllers
 
             //ViewBag.Produtos = produtos; // Carrego/Levo os produtos para a View
             //TempData["Produtos"] = produtos;
+
+            var produtos = produtoRepository.FindAll();
 
             return View(produtos); // Posso enviar pois a View está tipada
         }
@@ -85,6 +95,9 @@ namespace Fiap.Web.Donation1.Controllers
             }
             else
             {
+                produtoModel.UsuarioId = 1;
+                produtoRepository.Insert(produtoModel);
+
                 // UPDATE produto SET WHERE Produto = produtoModel.ProdutoId
                 TempData["Mensagem"] = $"{produtoModel.Nome} alterado com sucesso";
 
@@ -96,7 +109,8 @@ namespace Fiap.Web.Donation1.Controllers
         public IActionResult Editar(int id)
         {
             // SELECT * FROM produto WHERE ProdutoId = {id};
-            var produto = produtos[id - 1];
+            //var produto = produtos[id - 1];
+            var produto = produtoRepository.FindById(id);
 
             // ViewBag para passar elementos do Controller para a View
             //ViewBag.Produto = produto;
@@ -116,6 +130,10 @@ namespace Fiap.Web.Donation1.Controllers
             }
             else
             {
+                produtoModel.DataCadastro = DateTime.Now;
+                produtoModel.UsuarioId = 1;
+                produtoRepository.Update(produtoModel);
+
                 // UPDATE produto SET WHERE Produto = produtoModel.ProdutoId
                 TempData["Mensagem"] = $"{produtoModel.Nome} alterado com sucesso";
 
