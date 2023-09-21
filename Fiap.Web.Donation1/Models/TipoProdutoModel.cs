@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Fiap.Web.Donation1.Models
 {
-    [Table("TipoProduto")] // Indica que a classe representa a tabela
+    [Table("TipoProduto")] // Notação indicando que a classe representa a tabela
     public class TipoProdutoModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Vai gerando Id incremental
+        [Key] // Notação para indicar chave primária
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Notação para gerar Id automático e incremental
         public int TipoProdutoId { get; set; }
 
         // [Column("NomeTipoProduto")] // Associa a propriedade à coluna do banco
