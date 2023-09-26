@@ -2,6 +2,7 @@
 using Fiap.Web.Donation1.Models;
 using Fiap.Web.Donation1.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,15 @@ namespace Fiap.Web.Donation1.Controllers
 
         private readonly ProdutoRepository produtoRepository;
 
+        private readonly TipoProdutoRepository tipoProdutoRepository;
+
+        private readonly int UsuarioId = 1;
+
         public ProdutoController(DataContext dataContext)
         {
 
             produtoRepository = new ProdutoRepository(dataContext);
+            tipoProdutoRepository = new TipoProdutoRepository(dataContext);
 
             // Acesso fake ao banco dados
 
@@ -60,7 +66,7 @@ namespace Fiap.Web.Donation1.Controllers
             //ViewBag.Produtos = produtos; // Carrego/Levo os produtos para a View
             //TempData["Produtos"] = produtos;
 
-            var produtos = produtoRepository.FindAll();
+            var produtos = produtoRepository.FindAllWithTipo();
 
             return View(produtos); // Posso enviar pois a View está tipada
         }
@@ -108,6 +114,11 @@ namespace Fiap.Web.Donation1.Controllers
         [HttpGet]
         public IActionResult Editar(int id)
         {
+            // Consulto todos os itens no banco e coloco em uma variável ViewBag
+            //ViewBag.TipoProdutos = tipoProdutoRepository.FindAll();
+            ComboTipoProduto();
+
+
             // SELECT * FROM produto WHERE ProdutoId = {id};
             //var produto = produtos[id - 1];
             var produto = produtoRepository.FindById(id);
@@ -124,13 +135,16 @@ namespace Fiap.Web.Donation1.Controllers
         {
             if (string.IsNullOrEmpty(produtoModel.Nome))
             {
+                //ViewBag.TipoProdutos = tipoProdutoRepository.FindAll();
+                ComboTipoProduto();
+
                 ViewBag.Mensagem = "O campo nome é requerido";
 
                 return View(produtoModel);
             }
             else
             {
-                produtoModel.DataCadastro = DateTime.Now;
+                //produtoModel.DataCadastro = DateTime.Now;
                 produtoModel.UsuarioId = 1;
                 produtoRepository.Update(produtoModel);
 
@@ -139,6 +153,15 @@ namespace Fiap.Web.Donation1.Controllers
 
                 return RedirectToAction("Index");
             }
+        }
+
+        private void ComboTipoProduto()
+        {
+            var tiposProdutos = tipoProdutoRepository.FindAll();
+
+            var comboTipoProdutos = new SelectList(tiposProdutos, "TipoProdutoId", "Nome");
+
+            ViewBag.TipoProdutos = comboTipoProdutos;
         }
     }
 }
