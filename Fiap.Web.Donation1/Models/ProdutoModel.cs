@@ -37,7 +37,7 @@ namespace Fiap.Web.Donation1.Models
         public double Valor { get; set; }
 
         // [DefaultValue(typeof(DateTime), DateTime.)]
-        public DateTime DataCadastro { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
 
         public DateTime DataExpiracao { get; set; }
 
