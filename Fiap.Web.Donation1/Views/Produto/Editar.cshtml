@@ -34,12 +34,25 @@
                         <label class="form-check-label">Disponível</label>
                     </div>
                     <div class="form-group">
-                        <label>Tipo:</label>
-                        <select name="TipoProdutoId" class="form-control w-75">
+                        <label>Tipo: @Model.TipoProdutoId</label>
+                        <select asp-for="TipoProdutoId" class="form-control w-75" asp-items="@ViewBag.TipoProdutos">
                             <option value="0">Selecione</option>
-                            <option value="1">Celular</option>
+
+                            @*foreach (var tipo in ViewBag.TipoProdutos)
+                            {
+                                if (Model.TipoProdutoId == tipo.TipoProdutoId)
+                                {
+                                    <option value="@tipo.TipoProdutoId" selected>@tipo.Nome</option>
+                                }
+                                else
+                                {
+                                    <option value="@tipo.TipoProdutoId">@tipo.Nome</option>
+                                }
+                            }*@
+
+                            @*<option value="1">Celular</option>
                             <option value="2">Televisor</option>
-                            <option value="1">Eletrodoméstico</option>
+                            <option value="1">Eletrodoméstico</option>*@
                         </select>
                     </div>
                     <div class="form-group">
@@ -52,7 +65,7 @@
                     </div>
                     <div class="form-group">
                         <label>Data da Expiração:</label>
-                        <input type="date" name="DataExpiracao" value="@Model.DataExpiracao"
+                        <input asp-for="DataExpiracao" value="@Model.DataExpiracao"
                                class="form-control w-25" />
                     </div>
 
