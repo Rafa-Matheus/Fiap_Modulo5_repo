@@ -86,6 +86,33 @@ namespace Fiap.Web.Donation1.Migrations
                     b.ToTable("TipoProduto");
                 });
 
+            modelBuilder.Entity("Fiap.Web.Donation1.Models.TrocaModel", b =>
+                {
+                    b.Property<Guid>("TrocaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProdutoId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProdutoId2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrocaId");
+
+                    b.HasIndex("ProdutoId1");
+
+                    b.HasIndex("ProdutoId2");
+
+                    b.ToTable("Troca");
+                });
+
             modelBuilder.Entity("Fiap.Web.Donation1.Models.UsuarioModel", b =>
                 {
                     b.Property<int>("UsuarioId")
@@ -123,6 +150,25 @@ namespace Fiap.Web.Donation1.Migrations
                     b.Navigation("TipoProduto");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Fiap.Web.Donation1.Models.TrocaModel", b =>
+                {
+                    b.HasOne("Fiap.Web.Donation1.Models.ProdutoModel", "ProdutoModel1")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fiap.Web.Donation1.Models.ProdutoModel", "ProdutoModel2")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId2")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProdutoModel1");
+
+                    b.Navigation("ProdutoModel2");
                 });
 #pragma warning restore 612, 618
         }
